@@ -22,7 +22,7 @@ public class TestCaseCreateOrderNegative {
     private OrderRequest orderRequest;
     private UserRequest userRequest;
     private UserRegistrationFields userRegistrationFields;
-    private String responseId;
+    private String token;
 
 
     public TestCaseCreateOrderNegative(List<String> ingredients) {
@@ -42,13 +42,13 @@ public class TestCaseCreateOrderNegative {
         orderRequest = new OrderRequest();
         userRequest = new UserRequest();
         userRegistrationFields = RandomTestUser.getRandomRegistration();
-        responseId = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
+        token = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
     }
 
     @After
     public void cancelOrder() {
-        if (responseId != "") {
-            userRequest.deletingUser(responseId);
+        if (token != null && !token.isBlank()){
+            userRequest.deletingUser(token);
         }
     }
 
@@ -56,7 +56,7 @@ public class TestCaseCreateOrderNegative {
     @DisplayName("Create order authorization user")
     public void testCreateOrderAuthUser() {
         OrderFields orderFields = new OrderFields(ingredients);
-        ValidatableResponse response = orderRequest.createOrder(orderFields, responseId);
+        ValidatableResponse response = orderRequest.createOrder(orderFields, token);
         response.assertThat()
                 .and()
                 .statusCode(500);
@@ -76,7 +76,7 @@ public class TestCaseCreateOrderNegative {
     @DisplayName("Order auth user not ingredients")
     public void testCreateOrderAuthUserNotIngredients() {
         OrderFields orderFields = new OrderFields();
-        ValidatableResponse response = orderRequest.createOrder(orderFields, responseId);
+        ValidatableResponse response = orderRequest.createOrder(orderFields, token);
         response.assertThat()
                 .statusCode(400)
                 .and()

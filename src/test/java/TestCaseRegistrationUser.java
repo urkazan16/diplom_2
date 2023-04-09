@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class TestCaseRegistrationUser {
 
-    String responseId;
+    public String token;
     private UserRequest userRequest;
     private UserRegistrationFields userRegistrationFields;
 
@@ -24,8 +24,8 @@ public class TestCaseRegistrationUser {
 
     @After
     public void clearUser() {
-        if (responseId != null) {
-            userRequest.deletingUser(responseId);
+        if (token != null && !token.isBlank()){
+            userRequest.deletingUser(token);
         }
     }
 
@@ -33,7 +33,7 @@ public class TestCaseRegistrationUser {
     @DisplayName("Registration user")
     public void getTestRegistrationUser() {
         ValidatableResponse response = userRequest.registerUser(userRegistrationFields);
-        responseId = response.extract().path(ACCESS_TOKEN);
+        token = response.extract().path(ACCESS_TOKEN);
         response.assertThat()
                 .statusCode(200)
                 .and()
@@ -45,7 +45,7 @@ public class TestCaseRegistrationUser {
     public void testRegistrationUserNotFieldsEmail() {
         userRegistrationFields.setEmail(null);
         ValidatableResponse response = userRequest.registerUser(userRegistrationFields);
-        responseId = response.extract().path(ACCESS_TOKEN);
+        token = response.extract().path(ACCESS_TOKEN);
         response.assertThat()
                 .statusCode(403)
                 .and()
@@ -55,9 +55,9 @@ public class TestCaseRegistrationUser {
     @Test
     @DisplayName("Registration user not fields password")
     public void testRegistrationUserNotFieldsPassword() {
-        userRegistrationFields.setPassword("");
+        userRegistrationFields.setPassword(null);
         ValidatableResponse response = userRequest.registerUser(userRegistrationFields);
-        responseId = response.extract().path(ACCESS_TOKEN);
+        token = response.extract().path(ACCESS_TOKEN);
         response.assertThat()
                 .statusCode(403)
                 .and()
@@ -67,9 +67,9 @@ public class TestCaseRegistrationUser {
     @Test
     @DisplayName("Registration user not fields name")
     public void testRegistrationUserNotFieldsName() {
-        userRegistrationFields.setName("");
+        userRegistrationFields.setName(null);
         ValidatableResponse response = userRequest.registerUser(userRegistrationFields);
-        responseId = response.extract().path(ACCESS_TOKEN);
+        token = response.extract().path(ACCESS_TOKEN);
         response.assertThat()
                 .statusCode(403)
                 .and()
@@ -82,7 +82,7 @@ public class TestCaseRegistrationUser {
         userRegistrationFields.setEmail(EMAIL);
         ValidatableResponse response = userRequest.registerUser(userRegistrationFields);
         userRequest.registerUser(userRegistrationFields);
-        responseId = response.extract().path(ACCESS_TOKEN);
+        token = response.extract().path(ACCESS_TOKEN);
         response.assertThat()
                 .statusCode(403)
                 .and()

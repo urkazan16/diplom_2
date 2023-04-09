@@ -52,7 +52,7 @@ public class UserRequest extends Header {
     }
 
     @Step("Deleting User {userTokenFields}")
-    public ValidatableResponse logoutUser(UserTokenFields userTokenFields) {
+    public ValidatableResponse logoutUser(UserToken userTokenFields) {
         return given()
                 .spec(getRequestSpec())
                 .body(userTokenFields)

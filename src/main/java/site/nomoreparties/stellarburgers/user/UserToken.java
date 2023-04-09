@@ -1,9 +1,9 @@
 package site.nomoreparties.stellarburgers.user;
 
-public class UserTokenFields {
+public class UserToken {
     private String token;
 
-    public UserTokenFields(String token) {
+    public UserToken(String token) {
         this.token = token;
     }
 

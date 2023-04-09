@@ -22,35 +22,34 @@ public class TestCaseOrdersUser {
     private OrderRequest orderRequest;
     private OrderFields orderFields;
     private IngredientRequest ingredientRequest;
-    private String responseId;
-    private List<String> responseIng;
+    private String token;
+    private List<String> responseIngredient;
 
     @Before
     public void setUp() {
         userRequest = new UserRequest();
         ingredientRequest = new IngredientRequest();
         userRegistrationFields = RandomTestUser.getRandomRegistration();
-        responseId = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
+        token = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
         orderRequest = new OrderRequest();
-        responseIng =  ingredientRequest.getIngredient().path(ORDER_ID);
+        responseIngredient =  ingredientRequest.getIngredient().path(ORDER_ID);
         orderFields = new OrderFields();
-        orderFields.setIngredients(responseIng);
+        orderFields.setIngredients(responseIngredient);
     }
 
     @After
     public void clearDate() {
-        if (responseId != "") {
-            userRequest.deletingUser(responseId);
+        if (token != null && !token.isBlank()){
+            userRequest.deletingUser(token);
         }
     }
 
 
     @Test
-    @DisplayName("Receiving orders from an authorized user") /// ===+++
+    @DisplayName("Receiving orders from an authorized user")
     public void testOrderAuthUserTest() {
-
-        orderRequest.createOrder(orderFields, responseId);
-        ValidatableResponse response = orderRequest.getOrder(responseId);
+        orderRequest.createOrder(orderFields, token);
+        ValidatableResponse response = orderRequest.getOrder(token);
         response.assertThat()
                 .statusCode(200)
                 .and()
@@ -60,8 +59,8 @@ public class TestCaseOrdersUser {
     @Test
     @DisplayName("User orders id")
     public void testOrderAuthUser() {
-        orderRequest.createOrder(orderFields, responseId);
-        ValidatableResponse response = orderRequest.getOrder(responseId);
+        orderRequest.createOrder(orderFields, token);
+        ValidatableResponse response = orderRequest.getOrder(token);
         response.assertThat()
                 .statusCode(200)
                 .and()
@@ -71,7 +70,7 @@ public class TestCaseOrdersUser {
         @Test
     @DisplayName("Message not auth user")
     public void testOrderNotAuthUser() {
-        orderRequest.createOrder(orderFields, responseId);
+        orderRequest.createOrder(orderFields, token);
         ValidatableResponse response = orderRequest.getOrder("");
         response.assertThat()
                 .statusCode(401)

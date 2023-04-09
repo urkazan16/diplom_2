@@ -14,20 +14,20 @@ public class TestCaseChangingUserData {
 
     private UserRequest userRequest;
     private UserRegistrationFields userRegistrationFields;
-    private String responseId;
+    private String token;
 
     @Before
     public void setUp() {
         userRequest = new UserRequest();
         userRegistrationFields = RandomTestUser.getRandomRegistration();
         ValidatableResponse response = userRequest.registerUser(userRegistrationFields);
-        responseId = response.extract().path(ACCESS_TOKEN);
+        token = response.extract().path(ACCESS_TOKEN);
     }
 
     @After
     public void clearDate() {
-        if (responseId != "") {
-            userRequest.deletingUser(responseId);
+        if (token != null && !token.isBlank()){
+            userRequest.deletingUser(token);
         }
     }
 
@@ -35,7 +35,7 @@ public class TestCaseChangingUserData {
     @DisplayName("Changing user email data")
     public void testChangingAuthUserEmail() {
         userRegistrationFields.setEmail(userRegistrationFields.getEmail());
-        ValidatableResponse response = userRequest.changingUser(userRegistrationFields, responseId);
+        ValidatableResponse response = userRequest.changingUser(userRegistrationFields, token);
         response.assertThat()
                 .statusCode(200)
                 .and()
@@ -46,7 +46,7 @@ public class TestCaseChangingUserData {
     @DisplayName("Changing user name data")
     public void testChangingAuthUserName() {
         userRegistrationFields.setName(userRegistrationFields.getName());
-        ValidatableResponse response = userRequest.changingUser(userRegistrationFields, responseId);
+        ValidatableResponse response = userRequest.changingUser(userRegistrationFields, token);
         response.assertThat()
                 .statusCode(200)
                 .and()
@@ -57,7 +57,7 @@ public class TestCaseChangingUserData {
     @DisplayName("Changing user password data")
     public void testChangingAuthUserPassword() {
         userRegistrationFields.setPassword(userRegistrationFields.getPassword());
-        ValidatableResponse response = userRequest.changingUser(userRegistrationFields, responseId);
+        ValidatableResponse response = userRequest.changingUser(userRegistrationFields, token);
         response.assertThat()
                 .statusCode(200)
                 .and()

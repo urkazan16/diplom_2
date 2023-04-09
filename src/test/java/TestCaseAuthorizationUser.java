@@ -7,7 +7,7 @@ import org.junit.Test;
 import site.nomoreparties.stellarburgers.user.UserAuthorizationFields;
 import site.nomoreparties.stellarburgers.user.UserRegistrationFields;
 import site.nomoreparties.stellarburgers.user.UserRequest;
-import site.nomoreparties.stellarburgers.user.UserTokenFields;
+import site.nomoreparties.stellarburgers.user.UserToken;
 
 import static site.nomoreparties.stellarburgers.constants.ResponseText.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,21 +16,21 @@ public class TestCaseAuthorizationUser {
 
     private UserRequest userRequest;
     private UserRegistrationFields userRegistrationFields;
-    private String responseId;
+    private String token;
 
-    private UserTokenFields userTokenFields;
+    private UserToken userTokenFields;
 
     @Before
     public void setUp() {
         userRequest = new UserRequest();
         userRegistrationFields = RandomTestUser.getRandomRegistration();
-        responseId = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
+        token = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
     }
 
     @After
     public void clearDate() {
-        if (responseId != null) {
-            userRequest.deletingUser(responseId);
+        if (token != null && !token.isBlank()){
+            userRequest.deletingUser(token);
         }
     }
 
@@ -71,7 +71,7 @@ public class TestCaseAuthorizationUser {
     public void testLogoutAuthorizationUser() {
         ValidatableResponse response = userRequest.authorizationUser(UserAuthorizationFields.from(userRegistrationFields));
         String refreshToken = response.extract().path(REFRESH_TOKEN);
-        userTokenFields = new UserTokenFields(refreshToken);
+        userTokenFields = new UserToken(refreshToken);
         ValidatableResponse responseLogout = userRequest.logoutUser(userTokenFields);
         responseLogout.assertThat()
                 .statusCode(200)

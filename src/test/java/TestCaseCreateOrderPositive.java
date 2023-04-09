@@ -22,7 +22,7 @@ public class TestCaseCreateOrderPositive {
     private UserRequest userRequest;
     private UserRegistrationFields userRegistrationFields;
     private IngredientRequest ingredientRequest;
-    private String responseId;
+    private String token;
     private List<String> responseIngredient;
     private OrderFields orderFields;
 
@@ -32,7 +32,7 @@ public class TestCaseCreateOrderPositive {
         userRequest = new UserRequest();
         ingredientRequest = new IngredientRequest();
         userRegistrationFields = RandomTestUser.getRandomRegistration();
-        responseId = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
+        token = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
         responseIngredient =  ingredientRequest.getIngredient().path(ORDER_ID);
         orderFields = new OrderFields();
         orderFields.setIngredients(responseIngredient);
@@ -40,15 +40,15 @@ public class TestCaseCreateOrderPositive {
 
     @After
     public void cancelOrder() {
-        if (!responseId.equals("")) {
-            userRequest.deletingUser(responseId);
+        if (token != null && !token.isBlank()){
+            userRequest.deletingUser(token);
         }
     }
 
     @Test
     @DisplayName("Create order authorization user")
     public void testCreateOrderAuthUser() {
-        ValidatableResponse response = orderRequest.createOrder(orderFields, responseId);
+        ValidatableResponse response = orderRequest.createOrder(orderFields, token);
         response.assertThat()
                 .and()
                 .statusCode(200)
@@ -58,7 +58,7 @@ public class TestCaseCreateOrderPositive {
     @Test
     @DisplayName("Create order authorization user get ingredients")
     public void testCreateOrderAuthUserOrdersIngredients() {
-        ValidatableResponse response = orderRequest.createOrder(orderFields, responseId);
+        ValidatableResponse response = orderRequest.createOrder(orderFields, token);
         response.assertThat()
                 .and()
                 .statusCode(200)
