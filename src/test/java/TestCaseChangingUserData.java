@@ -1,14 +1,14 @@
-import site.nomoreparties.stellarburgers.constants.RandomTestUser;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import site.nomoreparties.stellarburgers.constants.RandomTestUser;
 import site.nomoreparties.stellarburgers.user.UserRegistrationFields;
 import site.nomoreparties.stellarburgers.user.UserRequest;
 
-import static site.nomoreparties.stellarburgers.constants.ResponseText.*;
 import static org.hamcrest.Matchers.equalTo;
+import static site.nomoreparties.stellarburgers.constants.ResponseText.*;
 
 public class TestCaseChangingUserData {
 
@@ -26,7 +26,7 @@ public class TestCaseChangingUserData {
 
     @After
     public void clearDate() {
-        if (token != null && !token.isBlank()){
+        if (token != null && !token.isBlank()) {
             userRequest.deletingUser(token);
         }
     }

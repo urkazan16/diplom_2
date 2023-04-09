@@ -1,9 +1,9 @@
 package site.nomoreparties.stellarburgers.user;
 
-import site.nomoreparties.stellarburgers.constants.request.Header;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import site.nomoreparties.stellarburgers.constants.request.Header;
 
 import static io.restassured.RestAssured.given;
 

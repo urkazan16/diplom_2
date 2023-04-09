@@ -1,20 +1,20 @@
-import site.nomoreparties.stellarburgers.constants.RandomTestUser;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import site.nomoreparties.stellarburgers.ingredient.IngredientRequest;
-import site.nomoreparties.stellarburgers.order.OrderFields;
-import site.nomoreparties.stellarburgers.order.OrderRequest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import site.nomoreparties.stellarburgers.constants.RandomTestUser;
+import site.nomoreparties.stellarburgers.ingredient.IngredientRequest;
+import site.nomoreparties.stellarburgers.order.OrderFields;
+import site.nomoreparties.stellarburgers.order.OrderRequest;
 import site.nomoreparties.stellarburgers.user.UserRegistrationFields;
 import site.nomoreparties.stellarburgers.user.UserRequest;
 
 import java.util.List;
 
-import static site.nomoreparties.stellarburgers.constants.ResponseText.*;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static site.nomoreparties.stellarburgers.constants.ResponseText.*;
 
 public class TestCaseCreateOrderPositive {
 
@@ -33,14 +33,14 @@ public class TestCaseCreateOrderPositive {
         ingredientRequest = new IngredientRequest();
         userRegistrationFields = RandomTestUser.getRandomRegistration();
         token = userRequest.regUser(userRegistrationFields).path(ACCESS_TOKEN);
-        responseIngredient =  ingredientRequest.getIngredient().path(ORDER_ID);
+        responseIngredient = ingredientRequest.getIngredient().path(ORDER_ID);
         orderFields = new OrderFields();
         orderFields.setIngredients(responseIngredient);
     }
 
     @After
     public void cancelOrder() {
-        if (token != null && !token.isBlank()){
+        if (token != null && !token.isBlank()) {
             userRequest.deletingUser(token);
         }
     }

@@ -1,20 +1,20 @@
-import site.nomoreparties.stellarburgers.constants.RandomTestUser;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import site.nomoreparties.stellarburgers.order.OrderFields;
-import site.nomoreparties.stellarburgers.order.OrderRequest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import site.nomoreparties.stellarburgers.constants.RandomTestUser;
+import site.nomoreparties.stellarburgers.order.OrderFields;
+import site.nomoreparties.stellarburgers.order.OrderRequest;
 import site.nomoreparties.stellarburgers.user.UserRegistrationFields;
 import site.nomoreparties.stellarburgers.user.UserRequest;
 
 import java.util.List;
 
-import static site.nomoreparties.stellarburgers.constants.ResponseText.*;
 import static org.hamcrest.Matchers.equalTo;
+import static site.nomoreparties.stellarburgers.constants.ResponseText.*;
 
 @RunWith(Parameterized.class)
 public class TestCaseCreateOrderNegative {
@@ -47,7 +47,7 @@ public class TestCaseCreateOrderNegative {
 
     @After
     public void cancelOrder() {
-        if (token != null && !token.isBlank()){
+        if (token != null && !token.isBlank()) {
             userRequest.deletingUser(token);
         }
     }
